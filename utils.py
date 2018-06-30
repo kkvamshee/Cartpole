@@ -9,6 +9,7 @@ Created on Mon Jun 25 17:18:52 2018
 import numpy as np
 
 def discount_rewards(rewards, discount_rate):
+    rewards = np.array(rewards)
     after_effects = np.zeros(rewards.size)
     after_effects[-2] = rewards[-1] * discount_rate
     for step in np.arange(rewards.size-2)[::-1]:
@@ -17,6 +18,7 @@ def discount_rewards(rewards, discount_rate):
     return discounted_rewards
 
 def normalize_rewards(rewards):
-    avg = rewards.mean()
-    dev = rewards.std()
-    return (rewards-avg)/dev
+    flat = np.concatenate(rewards)
+    avg = flat.mean()
+    dev = flat.std()
+    return [(reward-avg)/dev for reward in rewards]
